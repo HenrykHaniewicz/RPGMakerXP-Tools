@@ -26,7 +26,7 @@ def save_script_by_name(scripts, target_name, output_dir="./saved"):
 
 def main():
     if len(sys.argv) != 3:
-        print("Usage: python3 save_script.py path/to/Scripts.rxdata script_name")
+        print("Usage: python3 save_script.py <path_to_rxdata> <script_name>")
         return
 
     rxdata_path = sys.argv[1]

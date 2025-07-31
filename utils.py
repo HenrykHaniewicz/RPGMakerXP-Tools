@@ -13,6 +13,11 @@ def save_scripts(rxdata_path, scripts):
     with open(rxdata_path, 'wb') as f:
         write(f, scripts)
 
+def sanitize_filename(name):
+    """Remove invalid characters for filenames, converting non-strings to strings first."""
+    name = str(name)
+    return "".join(c if c.isalnum() or c in (' ', '_', '-') else '_' for c in name)
+
 def iter_decompressed_scripts(scripts):
     """Yield (script_name, script_code) pairs from a list of compressed RPG Maker XP scripts."""
     for entry in scripts:

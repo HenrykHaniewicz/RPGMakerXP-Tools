@@ -49,7 +49,7 @@ def main(rxdata_path, script_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python compile_new_rxdata.py <rxdata_file> <script_file>")
+        print("Usage: python compile_rxdata.py <rxdata_file> <script_file>")
         sys.exit(1)
 
     rxdata_file = sys.argv[1]
