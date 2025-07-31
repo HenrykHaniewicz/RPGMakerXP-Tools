@@ -13,7 +13,7 @@ def search_function(scripts, function_name):
     Returns:
         list: Script names that contain a definition for the specified function.
     """
-    pattern = re.compile(rf"\bdef\s+{re.escape(function_name)}\b")
+    pattern = re.compile(rf"^\s*def[ \t]+(?:self\.)?{re.escape(function_name)}\s*(\(|$)", re.MULTILINE)
     results = []
 
     for script_name, script_code in iter_decompressed_scripts(scripts):
@@ -31,11 +31,20 @@ def list_all_functions(scripts):
     Returns:
         list: Alphabetically sorted list of unique function names.
     """
-    function_pattern = re.compile(r"\bdef\s+([a-zA-Z_]\w*)")
+    function_pattern = re.compile(r"\bdef\s+(?:self\.)?([_\w][\w]*[!?]?)", re.UNICODE)
     function_names = set()
 
     for _, script_code in iter_decompressed_scripts(scripts):
-        function_names.update(function_pattern.findall(script_code))
+        clean_code = re.sub(r'(["\'])(?:\\.|(?!\1).)*\1', '', script_code)
+        clean_code = re.sub(r'#.*', '', clean_code)
+        
+        # Extract candidate function names
+        candidates = function_pattern.findall(clean_code)
+
+        for name in candidates:
+            # Reject accidental captures like 'end' or empty lines
+            if name and (name[0].isalpha() or name[0] == '_') and name.strip().lower() != "end":
+                function_names.add(name)
 
     return sorted(function_names, key=str.lower)
 
@@ -45,7 +54,7 @@ def main():
         return
 
     rxdata_path = sys.argv[1]
-    function_name = sys.argv[2]
+    function_name = str(sys.argv[2])
 
     if not os.path.isfile(rxdata_path):
         print(f"File not found: {rxdata_path}")
@@ -63,8 +72,9 @@ def main():
             print(f" - {name}")
     else:
         print(f"\nFunction '{function_name}' not found in any script.")
-        print("\nHere is a list of all functions found in the script database:\n")
         all_funcs = list_all_functions(scripts)
+        num_funcs = len(all_funcs)
+        print(f"\nHere is a list of all {num_funcs} functions found in the script database:\n")
         for func in all_funcs:
             print(f" - {func}")
 
