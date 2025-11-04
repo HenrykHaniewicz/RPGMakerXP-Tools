@@ -86,10 +86,10 @@ Writes the script to `./saved/Scene_Title.rb`, creating the folder if necessary.
 ### Extract all scripts
 
 ```bash
-python extract_all_scripts.py data/[your_scripts].rxdata output_folder/
+python extract_all_scripts.py data/[your_scripts].rxdata
 ```
 
-Extracts every script into separate `.rb` files, named according to their script titles.
+Extracts every script into separate `.rb` files, named according to their script titles. The output folder is a datetime snapshot string (so you don't accidentally overwrite old extractions).
 
 ---
 
