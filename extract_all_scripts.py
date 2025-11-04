@@ -1,7 +1,7 @@
 import os
 import sys
 from datetime import datetime
-from utils import load_scripts, sanitize_filename, iter_decompressed_scripts
+from utils import load_scripts, iter_decompressed_scripts, save_script_to_file
 
 def extract_all_scripts(rxdata_path, output_root="saved"):
     """Extract all scripts from a .rxdata file and save them as .rb files in a timestamped folder.
@@ -13,17 +13,11 @@ def extract_all_scripts(rxdata_path, output_root="saved"):
     scripts = load_scripts(rxdata_path)
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     output_dir = os.path.join(output_root, timestamp)
-    os.makedirs(output_dir, exist_ok=True)
 
     count = 0
     for script_name, script_code in iter_decompressed_scripts(scripts):
-        filename = sanitize_filename(script_name) + ".rb"
-        filepath = os.path.join(output_dir, filename)
-
-        with open(filepath, 'w', encoding='utf-8') as f:
-            f.write(script_code)
-
-        count += 1
+        if save_script_to_file(script_name, script_code, output_dir):
+            count += 1
 
     print(f"Extracted {count} scripts to: {output_dir}")
 

@@ -2,7 +2,7 @@ import sys
 import os
 import shutil
 import zlib
-from utils import save_scripts, load_scripts
+from utils import save_scripts, load_scripts, find_script_by_filename
 
 def update_script(scripts, script_name_to_update, new_code):
     found = False
@@ -24,7 +24,8 @@ def update_script(scripts, script_name_to_update, new_code):
     return scripts
 
 def main(rxdata_path, script_path):
-    script_name = os.path.splitext(os.path.basename(script_path))[0]
+    # Get the sanitized filename (without .rb extension)
+    sanitized_name = os.path.splitext(os.path.basename(script_path))[0]
 
     with open(script_path, 'r', encoding='utf-8') as f:
         new_code = f.read()
@@ -32,8 +33,15 @@ def main(rxdata_path, script_path):
     # Load the original scripts
     scripts = load_scripts(rxdata_path)
 
-    # Update the specified script
-    updated_scripts = update_script(scripts, script_name, new_code)
+    # Find the original script name that matches the sanitized filename
+    original_script_name = find_script_by_filename(scripts, sanitized_name)
+    
+    if original_script_name is None:
+        raise ValueError(f"Could not find original script for filename '{sanitized_name}.rb'. "
+                        f"The sanitized filename may not match any script in the rxdata file.")
+
+    # Update the specified script using the original name
+    updated_scripts = update_script(scripts, original_script_name, new_code)
 
     # Create new filename: e.g., Scripts_updated.rxdata
     base, ext = os.path.splitext(rxdata_path)
@@ -45,7 +53,7 @@ def main(rxdata_path, script_path):
     # Write the updated script list into the copied file
     save_scripts(updated_rxdata_path, updated_scripts)
 
-    print(f"Updated script '{script_name}' written to: {updated_rxdata_path}")
+    print(f"Updated script '{original_script_name}' (from file '{sanitized_name}.rb') written to: {updated_rxdata_path}")
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:

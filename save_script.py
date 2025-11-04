@@ -1,6 +1,6 @@
 import os
 import sys
-from utils import load_scripts, iter_decompressed_scripts
+from utils import load_scripts, iter_decompressed_scripts, save_script_to_file
 
 def save_script_by_name(scripts, target_name, output_dir="./saved"):
     """Save a decompressed script with the given name to a .rb file in the specified output directory.
@@ -12,15 +12,9 @@ def save_script_by_name(scripts, target_name, output_dir="./saved"):
     """
     for script_name, script_code in iter_decompressed_scripts(scripts):
         if script_name == target_name:
-            # Ensure script_name is safe for file naming
-            safe_name = "".join(c if c.isalnum() or c in ('_', '-') else '_' for c in script_name)
-            output_path = os.path.join(output_dir, f"{safe_name}.rb")
-            try:
-                with open(output_path, "w", encoding="utf-8") as f:
-                    f.write(script_code)
+            output_path = save_script_to_file(script_name, script_code, output_dir)
+            if output_path:
                 print(f"Script saved as: {output_path}")
-            except IOError as e:
-                print(f"Failed to save script: {e}")
             return
     print(f"Script named '{target_name}' not found.")
 

@@ -101,7 +101,7 @@ After editing your exported `.rb` scripts, recompile them into a new `[filename]
 python compile_rxdata.py input_folder/ output/[filename].rxdata
 ```
 
-Each `.rb` file in the input folder will become one entry in the rebuilt archive.
+Each `.rb` file in the input folder will become one entry in the rebuilt archive. The program creates a *new* `rxdata` file called `Scripts_updated.rxdata`. When you move this to your RPG Maker XP scripts folder, you will need to rename it to `Scripts.rxdata`.
 
 ---
 
