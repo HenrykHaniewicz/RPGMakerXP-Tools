@@ -18,7 +18,7 @@ def print_script_by_name(scripts, target_name):
 
 def main():
     if len(sys.argv) != 3:
-        print("Usage: python3 display_script.py <path_to_rxdata> <script_name>")
+        print("Usage: python display_script.py <path_to_rxdata> <script_name>")
         return
 
     rxdata_path = sys.argv[1]

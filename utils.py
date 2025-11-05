@@ -45,6 +45,7 @@ def iter_decompressed_scripts(scripts):
         if not isinstance(entry, list) or len(entry) < 3:
             continue
         script_id, script_name, script_code = entry[0:3]
+        script_name = normalize_script_name(script_name)
 
         try:
             script_code = zlib.decompress(script_code).decode('utf-8')

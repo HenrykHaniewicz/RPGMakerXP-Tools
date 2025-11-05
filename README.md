@@ -95,13 +95,40 @@ Extracts every script into separate `.rb` files, named according to their script
 
 ### Rebuild Scripts.rxdata
 
-After editing your exported `.rb` scripts, recompile them into a new `[filename].rxdata` (ususally `Scripts.rxdata`):
+After editing your exported `.rb` scripts, you can recompile them back into a new `[filename]_updated.rxdata` (usually `Scripts_updated.rxdata`) using (for example):
 
 ```bash
-python compile_rxdata.py data/[your_scripts].rxdata [script].rb
+python compile_rxdata.py data/Scripts.rxdata saved/Main.rb
 ```
 
-The `.rb` file will become one entry in the rebuilt archive (directory support coming very soon). The program creates a *new* `rxdata` file called `Scripts_updated.rxdata`. When you move this to your RPG Maker XP scripts folder, you will need to rename it to `Scripts.rxdata`.
+You can also pass multiple scripts or enter entire directories at once:
+
+# Recompile specific scripts
+
+```bash
+python compile_rxdata.py data/Scripts.rxdata saved/Main.rb saved/UI_Bag.rb saved/Battlers.rb
+```
+
+# Recompile every .rb script in a folder
+
+```bash
+python compile_rxdata.py data/Scripts.rxdata saved/*
+```
+
+# Or use a glob pattern
+
+```bash
+python compile_rxdata.py data/Scripts.rxdata "saved/*.rb"
+```
+
+The compiler will:
+- Read each `.rb` file as raw bytes.
+- Match it to its original entry in the `Scripts.rxdata` (or whatever it's called for you).
+- Replace that entry's contents if found.
+- Skip any `.rb` files that don’t exist in the original archive (without stopping the process).
+- After rebuilding, a new file `Scripts_updated.rxdata` is created in the same directory as the original `rxdata` file.
+
+To use it in RPG Maker XP, rename it to `Scripts.rxdata` and place it in your project’s Data/ folder, replacing the old one.
 
 ---
 

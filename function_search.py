@@ -50,7 +50,7 @@ def list_all_functions(scripts):
 
 def main():
     if len(sys.argv) != 3:
-        print("Usage: python3 function_search.py <path_to_rxdata> <function_name>")
+        print("Usage: python function_search.py <path_to_rxdata> <function_name>")
         return
 
     rxdata_path = sys.argv[1]
