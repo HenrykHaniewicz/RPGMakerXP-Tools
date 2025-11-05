@@ -103,19 +103,19 @@ python compile_rxdata.py data/Scripts.rxdata saved/Main.rb
 
 You can also pass multiple scripts or enter entire directories at once:
 
-# Recompile specific scripts
+### Recompile specific scripts
 
 ```bash
 python compile_rxdata.py data/Scripts.rxdata saved/Main.rb saved/UI_Bag.rb saved/Battlers.rb
 ```
 
-# Recompile every .rb script in a folder
+### Recompile every .rb script in a folder
 
 ```bash
 python compile_rxdata.py data/Scripts.rxdata saved/*
 ```
 
-# Or use a glob pattern
+### Or use a glob pattern
 
 ```bash
 python compile_rxdata.py data/Scripts.rxdata "saved/*.rb"
